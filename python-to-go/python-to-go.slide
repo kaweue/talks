@@ -1,0 +1,61 @@
+Przepiszmy wszystko na GO
+
+Paweł Marchewka
+Katarzyna Rybacka
+Codilime
+
+* Tungsten Fabric
+
+* Tungsten Fabric
+
+SDNy - wirtualne sieci dla wirtualnych komputerów
+[Ilustracja]
+
+* Architektura
+Dosyć rozbudowana
+[Ilustracja]
+
+* Problemy
+- Python
+- Brak transakcji
+- 2 bazy danych Cassandra i Zookeeper 
+- Nierozwijalny
+
+* Napiszmy wszystko od nowa
+
+* Założenia
+
+Zmieńmy język
+
+Zmieńmy architekturę
+
+X komponentów Y lini kodu
+
+6 miesięcy - 11 programistów
+
+
+* Czemu GO?
+
+“Go was developed while waiting for a C++ program to compile”
+
+Sophisticated Static Analysis tooling
+
+Concurrency - abstractions that don’t build on top of threading paradigms, callbacks are avoided
+
+* Co może pójść nie tak?
+
+* Brak generyczności
+
+Szablony <3 + narzędzia
+
+* Make the zero value useful
+
+Fieldmask vs Pointers
+
+* Wyjątki vs “if err != nil {“ czy to jest dobre
+
+Czy to jest dobre?
+
+* Ewolucja vs Rewolucja
+
+Czy da się zmienić wszystko na raz
