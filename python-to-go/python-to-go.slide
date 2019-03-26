@@ -41,7 +41,6 @@ X komponentów Y lini kodu
 
 5 miesięcy -10 programistów
 
-
 * Czemu GO?
 
 “Go was developed while waiting for a C++ program to compile”
@@ -62,9 +61,30 @@ Szablony <3 + narzędzia
 
 Fieldmask vs Pointers
 
-* Wyjątki vs “if err != nil {“ czy to jest dobre
+* Wyjątki vs “error“
 
-Czy to jest dobre?
+W Go error to interfejs
+
+    type error interface {
+        Error() string
+    }
+
+Najprostrza implementacja
+
+    type errorString struct {
+        s string
+    }
+
+    func (e *errorString) Error() string {
+        return e.s
+    }
+
+* Obsługa błędów gorzej
+
+.play -edit errors_bad.go /START OMIT/,/END OMIT/
+
+* Obsługa błędów lepiej
+.play errors_good.go /START OMIT/,/END OMIT/
 
 * Ewolucja vs Rewolucja
 
