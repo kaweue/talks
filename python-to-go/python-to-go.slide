@@ -18,16 +18,35 @@ Dosyć rozbudowana
 .image python-to-go/img/contrail_simple.png _ 600
 
 * Problemy
-Python:
+
+* Język - Python:
 
 - Dynamiczne typowanie
 - Brak wsparcia dla współbieżności
 - Brak ustandaryzowanego stylu kodowania
-- Brak organizacji kodu (chodzi o to że w GO kod zorganizowany w pakiety, modularnosc, przejrzystosc)
+- Brak organizacji kodu
 
-Brak transakcji - 2 bazy danych Cassandra orz Zookeeper 
+* Dynamiczne typowanie
+.image python-to-go/img/dynamiczne-typowanie.png _ 500
 
-Nierozwijalny - obecna architektura oraz stan kodu nie pozwala na dodanie istotny nowych funkcji
+* A żeby zrozumieć tę metodę..
+.image python-to-go/img/dynamiczne-komentarze.png _ 600
+
+* Brak ustandaryzowanego stylu kodowania
+.image python-to-go/img/reutrn.png _ 600
+
+* Brak organizacji kodu
+Tutaj dobry screen albo jakies inne przedstawienie
+
+* Brak transakcji
+
+- Dwie bazy danych: Cassandra, Zookeeper
+- Ściany metod undo..
+.image python-to-go/img/undo.png _ 480
+
+* Nierozwijalny
+
+Obecna architektura oraz stan kodu nie pozwala na dodanie nowych, istotnych funkcji
 
 * Napiszmy wszystko od nowa
 
