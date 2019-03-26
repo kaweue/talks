@@ -1,4 +1,4 @@
-Przepiszmy wszystko na GO
+Przejdźmy na GO! - studium przypadku
 
 Paweł Marchewka
 Katarzyna Rybacka
@@ -9,29 +9,37 @@ Codilime
 * Tungsten Fabric
 
 SDNy - wirtualne sieci dla wirtualnych komputerów
-[Ilustracja]
+
+.image python-to-go/img/one-rule.png _ 480
 
 * Architektura
 Dosyć rozbudowana
-[Ilustracja]
+
+.image python-to-go/img/contrail_simple.png _ 600
 
 * Problemy
-- Python
-- Brak transakcji
-- 2 bazy danych Cassandra i Zookeeper 
-- Nierozwijalny
+Python:
+
+- Dynamiczne typowanie
+- Brak wsparcia dla współbieżności
+- Brak ustandaryzowanego stylu kodowania
+- Brak organizacji kodu (chodzi o to że w GO kod zorganizowany w pakiety, modularnosc, przejrzystosc)
+
+Brak transakcji - 2 bazy danych Cassandra orz Zookeeper 
+
+Nierozwijalny - obecna architektura oraz stan kodu nie pozwala na dodanie istotny nowych funkcji
 
 * Napiszmy wszystko od nowa
 
 * Założenia
 
-Zmieńmy język
+Przejdźmy na GO
 
 Zmieńmy architekturę
 
 X komponentów Y lini kodu
 
-6 miesięcy - 11 programistów
+5 miesięcy -10 programistów
 
 
 * Czemu GO?
@@ -43,6 +51,8 @@ Sophisticated Static Analysis tooling
 Concurrency - abstractions that don’t build on top of threading paradigms, callbacks are avoided
 
 * Co może pójść nie tak?
+
+* Niejedno, wiele, dużo
 
 * Brak generyczności
 
