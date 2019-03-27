@@ -62,25 +62,24 @@ X komponentów Y lini kodu
 
 * Czemu GO?
 
+Statycznie typowany
+
+Prosty do nauki
+
+Posiada rozbudowane narzędzia statycznej analizy kodu
+
+Szybki kompilator:
 “Go was developed while waiting for a C++ program to compile”
 
-Sophisticated Static Analysis tooling
-
-Concurrency - abstractions that don’t build on top of threading paradigms, callbacks are avoided
+Generyczne wsparcie współbieżności
 
 * Co może pójść nie tak?
 
 * Niejedno, wiele, dużo
 
-* Brak generyczności
+* Errors are values
 
-Szablony <3 + narzędzia
-
-* Make the zero value useful
-
-Fieldmask vs Pointers
-
-* Wyjątki vs “error“
+* Error
 
 W Go error to interfejs
 
@@ -105,6 +104,49 @@ Najprostrza implementacja
 * Obsługa błędów lepiej
 .play errors_good.go /START OMIT/,/END OMIT/
 
-* Ewolucja vs Rewolucja
+* Make the zero value useful (or useless?)
 
-Czy da się zmienić wszystko na raz
+* Problem
+
+W JSONie pole może mieć 3 stany:
+
+- posiada wartość
+- jest puste
+- pole nie występuje
+
+W Pythonie dość łatwo można to wyrazić
+
+    if 'ipam_subnet_method' in obj_dict:
+        new_subnet_method = obj_dict.get('ipam_subnet_method')
+        if (old_subnet_method != new_subnet_method):
+            return (False, (400, 'ipam_subnet_method can not be changed'))
+
+* Make the zero value useful
+
+.play -edit json.go /START OMIT/,/END OMIT/
+
+* Pointers
+
+.play -edit json_pointer.go /START OMIT/,/END OMIT/
+
+* Fieldmask
+
+Python
+
+    if 'ipam_subnet_method' in obj_dict:
+        new_subnet_method = obj_dict.get('ipam_subnet_method')
+        if (old_subnet_method != new_subnet_method):
+            return (False, (400, 'ipam_subnet_method can not be changed'))
+
+Go
+
+	if format.CheckPath(fieldMask, []string{models.NetworkIpamFieldIpamSubnetMethod}) {
+		if oldIpam.GetIpamSubnetMethod() != newIpam.GetIpamSubnetMethod() {
+			return errors.Errorf("Subnet method cannot be changed")
+		}
+	}
+	return nil
+
+* Brak generyczności
+
+Szablony <3 + narzędzia
