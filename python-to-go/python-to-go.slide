@@ -27,26 +27,81 @@ Dosyć rozbudowana
 - Brak organizacji kodu
 
 * Dynamiczne typowanie
-.image python-to-go/img/dynamiczne-typowanie.png _ 500
+Argumentem większości metod tajemniczy *obj_dict*
+*Efekt*:
+- Brak kontroli nad przyjmowanymi argumentami
+- Niezrozumiały kod
+- Programista zakłada z czym ma do czynienia
+
+    def pre_dbe_create(cls, tenant_name, obj_dict, db_conn):
+    ...
+    ...
+        try:
+            if (obj_dict['parent_type'] != 'virtual-network' or
+                obj_dict['floating_ip_pool_subnets'] is None or
+                obj_dict['floating_ip_pool_subnets']['subnet_uuid'] is None or
+                    not obj_dict['floating_ip_pool_subnets']['subnet_uuid']):
+                return True, ""
+        except (KeyError, TypeError):
+            return True, ""
 
 * A żeby zrozumieć tę metodę..
-.image python-to-go/img/dynamiczne-komentarze.png _ 600
+
+    def pre_dbe_create(cls, tenant_name, obj_dict, db_conn):
+        #
+        # Floating-ip-pools corresponding to a virtual-network can be
+        # 'optionally' configured to be specific to a ipam subnet on a virtual-
+        # network.
+        #
+        # If the subnet is specified, sanity check the config to verify that
+        # the subnet exists in the virtual-network.
+        #
+
+        # If subnet info is not specified in the floating-ip-pool object, then
+        # there is nothing to validate. Just return.
+        try:
+            if (obj_dict['parent_type'] != 'virtual-network' or
+                obj_dict['floating_ip_pool_subnets'] is None or
+                obj_dict['floating_ip_pool_subnets']['subnet_uuid'] is None or
+                    not obj_dict['floating_ip_pool_subnets']['subnet_uuid']):
+                return True, ""
+        except (KeyError, TypeError):
+            return True, ""
 
 * Brak ustandaryzowanego stylu kodowania
-.image python-to-go/img/reutrn.png _ 600
+W obrębie jednej metody:
+
+    if 'segmentation_id' not in properties:
+        return (False, "Segmenation id must be configured")
+
+    if not properties.get('physical_network'):
+        return (False, "physical network must be configured")
+
+Można spotkać też dość nietypowe konwencje:
+.image python-to-go/img/reutrn.png _ 900
 
 * Brak organizacji kodu
 Tutaj dobry screen albo jakies inne przedstawienie
 
+* A z innej beczki..
+Jedyną wspieraną wersją jest *Python2.7.13*
+
+* Problem
+To próba wykorzystania pliku po jego zamknięciu 
+Znaleziono na to powszechnie wykorzystywane rozwiązanie:
+
+    sed -i 's/self.close()/#self.close()/g' /usr/lib64/python2.7/xml/sax/xmlreader.py
+
 * Brak transakcji
 
 - Dwie bazy danych: Cassandra, Zookeeper
-- Ściany metod undo..
-.image python-to-go/img/undo.png _ 480
+- Sztuczny rollback za pomocą metod *undo..()*
+.image python-to-go/img/undo.png 470 600
 
-* Nierozwijalny
+* Nierozwijalny system
 
 Obecna architektura oraz stan kodu nie pozwala na dodanie nowych, istotnych funkcji
+.image python-to-go/img/contrail_simple.png _ 600
 
 * Napiszmy wszystko od nowa
 
@@ -56,22 +111,24 @@ Przejdźmy na GO
 
 Zmieńmy architekturę
 
-X komponentów Y lini kodu
+*5* komponentów - *147374* lini kodu
 
-5 miesięcy -10 programistów
+*5* miesięcy - *10* programistów
 
 * Czemu GO?
 
-Statycznie typowany
+- Statycznie typowany
 
-Prosty do nauki
+- Prosty do nauki:
+_“Do_Less._Enable_More.“_
 
-Posiada rozbudowane narzędzia statycznej analizy kodu
+- Posiada rozbudowane narzędzia statycznej analizy kodu:
+_“Gofmt's_style_is_no_one's_favorite,_yet_gofmt_is_everyone's_favorite”_
 
-Szybki kompilator:
-“Go was developed while waiting for a C++ program to compile”
+- Szybki kompilator:
+_“Go_was_developed_while_waiting_for_a_C++_program_to_compile”_
 
-Generyczne wsparcie współbieżności
+- Generyczne wsparcie współbieżności
 
 * Co może pójść nie tak?
 
@@ -147,6 +204,32 @@ Go
 	}
 	return nil
 
-* Brak generyczności
+* Go = brak generyczności
 
-Szablony <3 + narzędzia
+* Jak możemy sobie z tym poradzić?
+
+* Interfejsy
+.code interface.go /START OMIT/,/END OMIT/
+
+* Jakie korzyści?
+Zyskaliśmy pewną elastyczność
+
+Ale:
+- Możemy korzystać tylko z metod interfejsu, nie typu
+- Redundantne metody dla typów spełniających interfejs
+
+* Gener..acja kodu
+Skoro nie możemy stworzyć metody, która obsłuży wybrane przez nas typy ->
+Stwórzmy tyle wersji metod ile typów chcemy obsłużyć
+
+W tym celu wykorzystaliśmy szablony *Pongo2*:
+
+.code generics.go /START OMIT/,/END OMIT/
+
+* Zysk z generacji
+- Kontrola typów w czasie kompilacji
+
+- Unikanie użycia interface{} i asercji typów
+_"interface{}_says_nothing."_
+
+- Logika napisana raz
