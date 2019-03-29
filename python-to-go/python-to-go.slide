@@ -8,12 +8,12 @@ Codilime
 
 * Tungsten Fabric
 
-SDNy - wirtualne sieci dla wirtualnych komputerów
+SDN (Software Defined Networks) - wirtualne sieci dla wirtualnych komputerów
 
 .image python-to-go/img/one-rule.png _ 480
 
 * Architektura
-Dosyć rozbudowana
+Dość rozbudowana
 
 .image python-to-go/img/contrail_simple.png _ 600
 
@@ -29,6 +29,7 @@ Dosyć rozbudowana
 * Dynamiczne typowanie
 Argumentem większości metod tajemniczy *obj_dict*
 *Efekt*:
+
 - Brak kontroli nad przyjmowanymi argumentami
 - Niezrozumiały kod
 - Programista zakłada z czym ma do czynienia
@@ -81,13 +82,13 @@ Można spotkać też dość nietypowe konwencje:
 .image python-to-go/img/reutrn.png _ 900
 
 * Brak organizacji kodu
-Tutaj dobry screen albo jakies inne przedstawienie
+.image python-to-go/img/server_line.png
 
 * A z innej beczki..
 Jedyną wspieraną wersją jest *Python2.7.13*
 
 * Problem
-To próba wykorzystania pliku po jego zamknięciu 
+To próba wykorzystania pliku po jego zamknięciu.
 Znaleziono na to powszechnie wykorzystywane rozwiązanie:
 
     sed -i 's/self.close()/#self.close()/g' /usr/lib64/python2.7/xml/sax/xmlreader.py
@@ -96,7 +97,7 @@ Znaleziono na to powszechnie wykorzystywane rozwiązanie:
 
 - Dwie bazy danych: Cassandra, Zookeeper
 - Sztuczny rollback za pomocą metod *undo..()*
-.image python-to-go/img/undo.png 470 600
+.image python-to-go/img/undo.png 460 _
 
 * Nierozwijalny system
 
@@ -212,9 +213,12 @@ Go
 .code interface.go /START OMIT/,/END OMIT/
 
 * Jakie korzyści?
-Zyskaliśmy pewną elastyczność
+
+- Zyskaliśmy pewną elastyczność.
+- Podejście czyste i idiomatyczne
 
 Ale:
+
 - Możemy korzystać tylko z metod interfejsu, nie typu
 - Redundantne metody dla typów spełniających interfejs
 
@@ -227,9 +231,14 @@ W tym celu wykorzystaliśmy szablony *Pongo2*:
 .code generics.go /START OMIT/,/END OMIT/
 
 * Zysk z generacji
-- Kontrola typów w czasie kompilacji
+- Statyczna kontrola typów w czasie kompilacji
 
 - Unikanie użycia interface{} i asercji typów
 _"interface{}_says_nothing."_
 
 - Logika napisana raz
+
+Kosztem:
+
+- Plików o znacznej wielkości
+- Potrzebą zewnętrznych narzędzi
