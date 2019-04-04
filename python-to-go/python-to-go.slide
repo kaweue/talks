@@ -85,7 +85,7 @@ Można spotkać też dość nietypowe konwencje:
 .image python-to-go/img/server_line.png
 
 * A z innej beczki..
-Jedyną wspieraną wersją jest *Python2.7.13*
+Jedyną wspieraną wersją jest *Python* *2.7.13*
 
 * Problem
 To próba wykorzystania pliku po jego zamknięciu.
@@ -112,9 +112,11 @@ Przejdźmy na GO
 
 Zmieńmy architekturę
 
-*5* komponentów - *147374* lini kodu
+*5* komponentów - *147* *374* lini kodu (włącznie z testami)
 
 *5* miesięcy - *10* programistów
+
+*100* *-* *150* lini kodu dziennie
 
 * Czemu GO?
 
@@ -166,7 +168,7 @@ Najprostrza implementacja
 
 * Problem
 
-W JSONie pole może mieć 3 stany:
+W JSON pole może mieć 3 stany:
 
 - posiada wartość
 - jest puste
@@ -198,12 +200,18 @@ Python
 
 Go
 
-	if format.CheckPath(fieldMask, []string{models.NetworkIpamFieldIpamSubnetMethod}) {
-		if oldIpam.GetIpamSubnetMethod() != newIpam.GetIpamSubnetMethod() {
-			return errors.Errorf("Subnet method cannot be changed")
-		}
+	type FieldMask struct {
+		Paths   []string
 	}
-	return nil
+
+	func (sv *ContrailTypeLogicService) checkSubnetMethod(
+		fieldMask *types.FieldMask,
+	) error {
+		if format.CheckPath(fieldMask, []string{models.NetworkIpamFieldIpamSubnetMethod}) {
+			if oldIpam.GetIpamSubnetMethod() != newIpam.GetIpamSubnetMethod() {
+				return errors.Errorf("Subnet method cannot be changed")
+			}
+		}
 
 * Go = brak generyczności
 
@@ -222,13 +230,17 @@ Ale:
 - Możemy korzystać tylko z metod interfejsu, nie typu
 - Redundantne metody dla typów spełniających interfejs
 
-* Gener..acja kodu
+* Generaaaaacja kodu
 Skoro nie możemy stworzyć metody, która obsłuży wybrane przez nas typy ->
 Stwórzmy tyle wersji metod ile typów chcemy obsłużyć
 
-W tym celu wykorzystaliśmy szablony *Pongo2*:
+W tym celu wykorzystaliśmy szablony *Pongo2* (_Django-syntax_ _like_ _template-engine_ _for_ _Go_):
 
 .code generics.go /START OMIT/,/END OMIT/
+
+* Efekt
+
+.code generics_efect.go
 
 * Zysk z generacji
 - Statyczna kontrola typów w czasie kompilacji
@@ -242,3 +254,13 @@ Kosztem:
 
 - Plików o znacznej wielkości
 - Potrzebą zewnętrznych narzędzi
+
+* Podsumowanie
+
+* Wnioski
+
+- W ciągu 10 miesięcy udało nam się przepisać +/- 15% kodu
+- Projekt stał się rozwijalny
+- Mniejszy próg wejścia
+- Powstało sporo _boilerplate_ _code_ - tam gdzie logika nie była zgodna z duchem GO.
+- _Szacować_ _powinno_ _się_ _ile_ _trzeba_ _zrobić,_ _a_ _nie_ _ile_ _kodu_ _chcemy_ _przepisać_

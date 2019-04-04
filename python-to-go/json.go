@@ -14,7 +14,7 @@ type dog struct {
 func unmarshalGoodBoi(gb string) {
 	d := dog{}
 	json.Unmarshal([]byte(gb), &d)
-	fmt.Printf("%s -> %+v\n", gb, d)
+	fmt.Printf("JSON: %s -> Go: %+v\n", gb, d)
 }
 
 func main() {
