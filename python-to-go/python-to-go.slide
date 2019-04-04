@@ -19,12 +19,16 @@ Dość rozbudowana
 
 * Problemy
 
-* Język - Python:
+* Python - pułapki
 
 - Dynamiczne typowanie
 - Brak wsparcia dla współbieżności
 - Brak ustandaryzowanego stylu kodowania
 - Brak organizacji kodu
+
+*Problemem*jest*nie*sam*język*a*jego*wykorzystanie*
+
+: Na następnych slajdach są tego przykłady
 
 * Dynamiczne typowanie
 Argumentem większości metod tajemniczy *obj_dict*
@@ -102,7 +106,6 @@ Znaleziono na to powszechnie wykorzystywane rozwiązanie:
 * Nierozwijalny system
 
 Obecna architektura oraz stan kodu nie pozwala na dodanie nowych, istotnych funkcji
-.image python-to-go/img/contrail_simple.png _ 600
 
 * Napiszmy wszystko od nowa
 
@@ -116,7 +119,7 @@ Zmieńmy architekturę
 
 *5* miesięcy - *10* programistów
 
-*100* *-* *150* lini kodu dziennie
+Co daje *100* *-* *150* lini kodu dziennie
 
 * Czemu GO?
 
@@ -230,7 +233,7 @@ Ale:
 - Możemy korzystać tylko z metod interfejsu, nie typu
 - Redundantne metody dla typów spełniających interfejs
 
-* Generaaaaacja kodu
+* Gener..acja kodu
 Skoro nie możemy stworzyć metody, która obsłuży wybrane przez nas typy ->
 Stwórzmy tyle wersji metod ile typów chcemy obsłużyć
 
@@ -260,7 +263,9 @@ Kosztem:
 * Wnioski
 
 - W ciągu 10 miesięcy udało nam się przepisać +/- 15% kodu
+- Powstało ok 73 tysiące lini kodu
+- Uwzględniająć kod wygenerowany około 1,2 miliona lini
 - Projekt stał się rozwijalny
-- Mniejszy próg wejścia
 - Powstało sporo _boilerplate_ _code_ - tam gdzie logika nie była zgodna z duchem GO.
 - _Szacować_ _powinno_ _się_ _ile_ _trzeba_ _zrobić,_ _a_ _nie_ _ile_ _kodu_ _chcemy_ _przepisać_
+- 1 linia w Pythonie odpowiada około 3 - 4 liniom w Go
