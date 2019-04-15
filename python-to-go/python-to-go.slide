@@ -1,28 +1,23 @@
-Przejdźmy na GO! - studium przypadku
+Przejdźmy na Go! - studium przypadku
 
 Paweł Marchewka
 Katarzyna Rybacka
-Codilime
+CodiLime
 
-* Tungsten Fabric
+* SDN
 
-* Tungsten Fabric
+* SDN
 
 SDN (Software Defined Networks) - wirtualne sieci dla wirtualnych komputerów
 
-.image python-to-go/img/one-rule.png _ 480
-
-* Architektura
-Dość rozbudowana
-
-.image python-to-go/img/contrail_simple.png _ 600
+TODO: _Rysunek_
 
 * Problemy
 
 * Python - pułapki
 
 - Dynamiczne typowanie
-- Brak wsparcia dla współbieżności
+- Brak generycznego wsparcia dla współbieżności
 - Brak ustandaryzowanego stylu kodowania
 - Brak organizacji kodu
 
@@ -88,30 +83,11 @@ Można spotkać też dość nietypowe konwencje:
 * Brak organizacji kodu
 .image python-to-go/img/server_line.png
 
-* A z innej beczki..
-Jedyną wspieraną wersją jest *Python* *2.7.13*
-
-* Problem
-To próba wykorzystania pliku po jego zamknięciu.
-Znaleziono na to powszechnie wykorzystywane rozwiązanie:
-
-    sed -i 's/self.close()/#self.close()/g' /usr/lib64/python2.7/xml/sax/xmlreader.py
-
-* Brak transakcji
-
-- Dwie bazy danych: Cassandra, Zookeeper
-- Sztuczny rollback za pomocą metod *undo..()*
-.image python-to-go/img/undo.png 460 _
-
-* Nierozwijalny system
-
-Obecna architektura oraz stan kodu nie pozwala na dodanie nowych, istotnych funkcji
-
 * Napiszmy wszystko od nowa
 
 * Założenia
 
-Przejdźmy na GO
+Przejdźmy na *Go*
 
 Zmieńmy architekturę
 
@@ -121,7 +97,7 @@ Zmieńmy architekturę
 
 Co daje *100* *-* *150* lini kodu dziennie
 
-* Czemu GO?
+* Czemu Go?
 
 - Statycznie typowany
 
@@ -135,6 +111,8 @@ _“Gofmt's_style_is_no_one's_favorite,_yet_gofmt_is_everyone's_favorite”_
 _“Go_was_developed_while_waiting_for_a_C++_program_to_compile”_
 
 - Generyczne wsparcie współbieżności
+
+- bo Kubernetes, bo Docker...
 
 * Co może pójść nie tak?
 
@@ -192,7 +170,7 @@ W Pythonie dość łatwo można to wyrazić
 
 .play -edit json_pointer.go /START OMIT/,/END OMIT/
 
-* Fieldmask
+* FieldMask
 
 Python
 
@@ -225,7 +203,7 @@ Go
 
 * Jakie korzyści?
 
-- Zyskaliśmy pewną elastyczność.
+- Zyskaliśmy pewną elastyczność
 - Podejście czyste i idiomatyczne
 
 Ale:
@@ -264,8 +242,7 @@ Kosztem:
 
 - W ciągu 10 miesięcy udało nam się przepisać +/- 15% kodu
 - Powstało ok 73 tysiące lini kodu
-- Uwzględniająć kod wygenerowany około 1,2 miliona lini
-- Projekt stał się rozwijalny
-- Powstało sporo _boilerplate_ _code_ - tam gdzie logika nie była zgodna z duchem GO.
-- _Szacować_ _powinno_ _się_ _ile_ _trzeba_ _zrobić,_ _a_ _nie_ _ile_ _kodu_ _chcemy_ _przepisać_
-- 1 linia w Pythonie odpowiada około 3 - 4 liniom w Go
+- Uwzględniając kod wygenerowany około 1,2 miliona lini
+- Powstało sporo _boilerplate_ _code_ - tam gdzie logika nie była zgodna z duchem Go
+- 1 linia w Pythonie odpowiada _(w_naszym_przypadku)_ około 3 - 4 liniom w Go
+- _Szacować_powinno_się_ile_trzeba_zrobić,_a_nie_ile_kodu_trzeba_przepisać_
