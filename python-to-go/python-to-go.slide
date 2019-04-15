@@ -10,7 +10,7 @@ CodiLime
 
 SDN (Software Defined Networks) - wirtualne sieci dla wirtualnych komputerów
 
-TODO: _Rysunek_
+TODO: _Rysunek_czym_sa_sdny
 
 * Problemy
 
@@ -240,7 +240,6 @@ Kosztem:
 
 * Wnioski
 
-- W ciągu 10 miesięcy udało nam się przepisać +/- 15% kodu
 - Powstało ok 73 tysiące lini kodu
 - Uwzględniając kod wygenerowany około 1,2 miliona lini
 - Powstało sporo _boilerplate_ _code_ - tam gdzie logika nie była zgodna z duchem Go
