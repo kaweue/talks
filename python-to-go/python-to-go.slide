@@ -230,6 +230,8 @@ Go
 
 * Współbieżnośc -> równoległość
 
+    go srv.serve()
+
 1. Wbudowane wsparcie dla współbieżności w przeciwieństwie do Pythona (async, gevent)
 
 - gorutyny
