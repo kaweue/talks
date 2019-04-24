@@ -85,17 +85,7 @@ Można spotkać też dość nietypowe konwencje:
 
 * Napiszmy wszystko od nowa
 
-* Założenia
-
-Przejdźmy na *Go*
-
-Zmieńmy architekturę
-
-*5* komponentów - *147* *374* lini kodu (włącznie z testami)
-
-*5* miesięcy - *10* programistów
-
-Co daje *100* *-* *150* lini kodu dziennie
+* Przejdźmy na Go
 
 * Czemu Go?
 
@@ -117,6 +107,48 @@ _“Go_was_developed_while_waiting_for_a_C++_program_to_compile”_
 * Co może pójść nie tak?
 
 * Niejedno, wiele, dużo
+
+* Go = brak generyczności
+
+* Jak możemy sobie z tym poradzić?
+
+* Interfejsy
+.code interface.go /START OMIT/,/END OMIT/
+
+* Jakie korzyści?
+
+- Zyskaliśmy pewną elastyczność
+- Podejście czyste i idiomatyczne
+
+Ale:
+
+- Możemy korzystać tylko z metod interfejsu, nie typu
+- Redundantne metody dla typów spełniających interfejs
+
+* Gener..acja kodu
+Skoro nie możemy stworzyć metody, która obsłuży wybrane przez nas typy ->
+Stwórzmy tyle wersji metod ile typów chcemy obsłużyć
+
+W tym celu wykorzystaliśmy szablony *Pongo2* (_Django-syntax_ _like_ _template-engine_ _for_ _Go_):
+
+.code generics.go /START OMIT/,/END OMIT/
+
+* Efekt
+
+.code generics_efect.go
+
+* Zysk z generacji
+- Statyczna kontrola typów w czasie kompilacji
+
+- Unikanie użycia interface{} i asercji typów
+_"interface{}_says_nothing."_
+
+- Logika napisana raz
+
+Kosztem:
+
+- Plików o znacznej wielkości
+- Potrzebą zewnętrznych narzędzi
 
 * Errors are values
 
@@ -185,7 +217,7 @@ Go
 		Paths   []string
 	}
 
-	func (sv *ContrailTypeLogicService) checkSubnetMethod(
+	func (sv *TypeLogicService) checkSubnetMethod(
 		fieldMask *types.FieldMask,
 	) error {
 		if format.CheckPath(fieldMask, []string{models.NetworkIpamFieldIpamSubnetMethod}) {
@@ -194,54 +226,23 @@ Go
 			}
 		}
 
-* Go = brak generyczności
+* Co może pójść tak?
 
-* Jak możemy sobie z tym poradzić?
+* Współbieżnośc -> równoległość
 
-* Interfejsy
-.code interface.go /START OMIT/,/END OMIT/
+1. Wbudowane wsparcie dla współbieżności w przeciwieństwie do Pythona (async, gevent)
 
-* Jakie korzyści?
+- gorutyny
+- kanały
 
-- Zyskaliśmy pewną elastyczność
-- Podejście czyste i idiomatyczne
+2. Podłoże dla bezpiecznego równoległego przetwarzania
 
-Ale:
-
-- Możemy korzystać tylko z metod interfejsu, nie typu
-- Redundantne metody dla typów spełniających interfejs
-
-* Gener..acja kodu
-Skoro nie możemy stworzyć metody, która obsłuży wybrane przez nas typy ->
-Stwórzmy tyle wersji metod ile typów chcemy obsłużyć
-
-W tym celu wykorzystaliśmy szablony *Pongo2* (_Django-syntax_ _like_ _template-engine_ _for_ _Go_):
-
-.code generics.go /START OMIT/,/END OMIT/
-
-* Efekt
-
-.code generics_efect.go
-
-* Zysk z generacji
-- Statyczna kontrola typów w czasie kompilacji
-
-- Unikanie użycia interface{} i asercji typów
-_"interface{}_says_nothing."_
-
-- Logika napisana raz
-
-Kosztem:
-
-- Plików o znacznej wielkości
-- Potrzebą zewnętrznych narzędzi
+- Go: gorutyny w puli wątków
+- Python: zewnętrzny WebServer (uWSGI, gunicorn)
 
 * Podsumowanie
 
-* Wnioski
-
-- Powstało ok 73 tysiące lini kodu
-- Uwzględniając kod wygenerowany około 1,2 miliona lini
-- Powstało sporo _boilerplate_ _code_ - tam gdzie logika nie była zgodna z duchem Go
-- 1 linia w Pythonie odpowiada _(w_naszym_przypadku)_ około 3 - 4 liniom w Go
-- _Szacować_powinno_się_ile_trzeba_zrobić,_a_nie_ile_kodu_trzeba_przepisać_
+- Język domenowy ukierunkowany na tworzenie backendów
+- Łatwiejszy w utrzymaniu i rozwoju
+- _Easy_to_learn_hard_to_master_
+- Migracja z uniwersalnego języka może być trudna
