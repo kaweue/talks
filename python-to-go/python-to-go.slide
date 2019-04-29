@@ -10,7 +10,7 @@ CodiLime
 
 SDN (Software Defined Networks) - wirtualne sieci dla wirtualnych komputerów
 
-.image python-to-go/img/sdn.svg _ 700
+.image img/sdn.svg _ 700
 
 * Problemy
 
@@ -78,10 +78,10 @@ W obrębie jednej metody:
         return (False, "physical network must be configured")
 
 Można spotkać też dość nietypowe konwencje:
-.image python-to-go/img/reutrn.png _ 900
+.image img/reutrn.png _ 900
 
 * Brak organizacji kodu
-.image python-to-go/img/server_line.png
+.image img/server_line.png
 
 * Napiszmy wszystko od nowa
 
@@ -108,17 +108,17 @@ _“Go_was_developed_while_waiting_for_a_C++_program_to_compile”_
 
 * Niejedno, wiele, dużo
 
-* Go = brak generyczności
+* Go == brak generyczności
 
 * Jak możemy sobie z tym poradzić?
 
 * Interfejsy
-.code interface.go /START OMIT/,/END OMIT/
+.code src/interface.go /START OMIT/,/END OMIT/
 
 * Jakie korzyści?
 
 - Zyskaliśmy pewną elastyczność
-- Podejście czyste i idiomatyczne
+- Podejście czyste i _idiomatyczne*_
 
 Ale:
 
@@ -131,11 +131,11 @@ Stwórzmy tyle wersji metod ile typów chcemy obsłużyć
 
 W tym celu wykorzystaliśmy szablony *Pongo2* (_Django-syntax_ _like_ _template-engine_ _for_ _Go_):
 
-.code generics.go /START OMIT/,/END OMIT/
+.code src/generics.go /START OMIT/,/END OMIT/
 
 * Efekt
 
-.code generics_efect.go
+.code src/generics_efect.go
 
 * Zysk z generacji
 - Statyczna kontrola typów w czasie kompilacji
@@ -172,10 +172,10 @@ Najprostrza implementacja
 
 * Obsługa błędów gorzej
 
-.play -edit errors_bad.go /START OMIT/,/END OMIT/
+.play -edit src/errors_bad.go /START OMIT/,/END OMIT/
 
 * Obsługa błędów lepiej
-.play errors_good.go /START OMIT/,/END OMIT/
+.play src/errors_good.go /START OMIT/,/END OMIT/
 
 * Make the zero value useful (or useless?)
 
@@ -196,11 +196,11 @@ W Pythonie dość łatwo można to wyrazić
 
 * Make the zero value useful
 
-.play -edit json.go /START OMIT/,/END OMIT/
+.play -edit src/json.go /START OMIT/,/END OMIT/
 
 * Pointers
 
-.play -edit json_pointer.go /START OMIT/,/END OMIT/
+.play -edit src/json_pointer.go /START OMIT/,/END OMIT/
 
 * FieldMask
 
@@ -247,4 +247,5 @@ Go
 - Język domenowy ukierunkowany na tworzenie backendów
 - Łatwiejszy w utrzymaniu i rozwoju
 - _Easy_to_learn_hard_to_master_
-- Migracja z uniwersalnego języka może być trudna
+- Migracja z uniwersalnego języka (1 do 1) może być trudna
+- Planować powinno się raczej co trzeba zrobić, a nie ile kodu trzeba przepisać
