@@ -120,11 +120,11 @@ Word splitting
 
 && and ||
 
-.play -edit src/test_construct/test_vs_new_test_&&_||.sh /START OMIT/,/END OMIT/
+.play -edit src/test_construct/test_vs_new_test_and_or.sh /START OMIT/,/END OMIT/
 
 > and <
 
-.play -edit src/test_construct/test_vs_new_test_<>.sh /START OMIT/,/END OMIT/
+.play -edit src/test_construct/test_vs_new_redir.sh /START OMIT/,/END OMIT/
 
 * If test ; then fi
 
