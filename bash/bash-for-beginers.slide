@@ -1,0 +1,338 @@
+I wanna know what bash is
+
+Paweł Marchewka
+
+* Sharp and bang
+
+.code src/she-bang.sh
+
+*Syntax:*
+    
+    #!interpreter [optional-arg]
+
+- "#!/usr/bin/env bash" is the best in case of portability
+- "/usr/bin/env" - is a workaround to run the first bash
+- it has to be at first line
+- the #! is actually a two-byte magic number
+- interpreter reads the whole file and interpret she-bang as a comment 
+
+* Variables and Parameter Expansion
+
+.play -edit src/variables/simple.sh /START OMIT/,/END OMIT/
+.play -edit src/variables/single_quotes.sh /START OMIT/,/END OMIT/
+.play -edit src/variables/default_value.sh /START OMIT/,/END OMIT/
+.play -edit src/variables/ref.sh /START OMIT/,/END OMIT/
+.play -edit src/variables/unset.sh /START OMIT/,/END OMIT/
+
+- _${name}_ is the basic form of parameter expansion
+- _$name_ is actually a simplified form
+
+* Special parameters
+
+Some of the special parameters available at the start of the script
+
+.play -edit src/variables/special_params.sh /START OMIT/,/END OMIT/
+
+* Bash Variables Are Untyped
+
+- bash variables are character strings
+- depending on context bash permits arithmetic operations
+
+.play -edit src/variable-types.sh /START OMIT/,/END OMIT/
+
+* Command lists
+
+A _list_ is a sequence of commands separated by ';', '&', '&&' or '||'
+
+- ';' execute sequentially
+
+.play src/command_list/semicolon.sh /START OMIT/,/END OMIT/
+
+- '&&' right command is executed only if left returns an exit status of zero
+
+.play src/command_list/and.sh /START OMIT/,/END OMIT/
+
+- '||' right command is executed only if left returns an non-zero exit status
+
+.play src/command_list/or.sh /START OMIT/,/END OMIT/
+
+- '&' commands are executed asynchronously in a subshell
+
+.play src/command_list/single_and.sh /START OMIT/,/END OMIT/
+
+* Command Substitution
+
+Command substitution occurs when a command is enclosed as follows:
+
+.play src/command_substitution/cmd_subs.sh /START OMIT/,/END OMIT/
+
+or
+
+.play src/command_substitution/cmd_subs_new.sh /START OMIT/,/END OMIT/
+
+The command substitution _$(cat_file)_ can be replaced by the equivalent but faster
+
+.play src/command_substitution/cmd_subs_with_redir.sh /START OMIT/,/END OMIT/
+
+* Test Constructs
+
+- 0 means "success", so exit_status 0 is *true* and 1 is *false*
+- *[* is just synonym for *test* command (may be a _builtin_)
+- *[[* *]]* is _extended_test_command_, which performs comparisons in a manner more familiar to programmers from other languages
+
+.play src/test_construct/test_string_eq.sh /START OMIT/,/END OMIT/
+.play src/test_construct/test_string_neq.sh /START OMIT/,/END OMIT/
+
+- in case of _((_..._))_ and _let_..._ constructs return exit_status is 0 when the arithmetic expressions they evaluate expand to a non-zero value 
+
+.play src/arithmetic/arithmetic_a.sh /START OMIT/,/END OMIT/
+.play src/arithmetic/arithmetic_b.sh /START OMIT/,/END OMIT/
+.play src/arithmetic/arithmetic_c.sh /START OMIT/,/END OMIT/
+
+* Test operators
+
+Some file operators:
+
+    [ -e file ] # file exist
+    [ -s file ] # file is not zero size
+    [ -d dir ]  # file is a directory
+    [ -f file ] # file is a regular file
+
+Some integer operators
+
+    [ "$a" -eq "$b" ] # is equal to
+    [ "$a" -ne "$b" ] # is not equal to
+    [ "$a" -gt "$b" ] # is greater than
+    [ "$a" -le "$b" ] # is less than
+
+Some string operators
+
+    [ "$a" == "$b" ] # is equal to
+    [ "$a" != "$b" ] # is not equal to
+    [ -z "$a" ]      # string is null
+    [ -n "$a" ]      # string is not null
+
+* "[" vs "[["
+
+Word splitting
+
+.play -edit src/test_construct/test_vs_new_test_word_splitting.sh /START OMIT/,/END OMIT/
+
+&& and ||
+
+.play -edit src/test_construct/test_vs_new_test_&&_||.sh /START OMIT/,/END OMIT/
+
+> and <
+
+.play -edit src/test_construct/test_vs_new_test_<>.sh /START OMIT/,/END OMIT/
+
+* If test ; then fi
+
+Syntax:
+
+    if test-commands; then
+        consequent-commands;
+    [elif more-test-commands; then
+        more-consequents;]
+    [else alternate-consequents;]
+    fi
+
+- _if/then_ tests whether the exit status of a list of commands is 0
+- the return status is the exit status of the last command executed, or zero if no condition tested true
+
+.play -edit src/test_construct/if_then_fi.sh /START OMIT/,/END OMIT/
+
+* I/O Redirection
+
+There are always three _files_
+
+- /dev/stdin - file descriptor 0 - input
+- /dev/stdout - file descriptor 1 - output
+- /dev/stderr - file descriptor 2 - error
+
+redirect input
+
+    [n]<word # 'n' is a file descriptor
+
+redirect output
+
+    [n]>[|]word
+    # >| override the setting of 'noclobber'
+    # 'noclobber' setting prevents redirection from overwriting existing files
+
+append output
+
+    [n]>>word
+
+* I/O Redirection
+
+redirect just error to file
+
+.play -edit src/io_redirect/io_redirect_err.sh /START OMIT/,/END OMIT/
+
+concatenate stdout and stderr to stdout
+
+.play -edit src/io_redirect/io_redirect_out_err_complex.sh /START OMIT/,/END OMIT/
+
+or
+
+.play -edit src/io_redirect/io_redirect_out_err.sh /START OMIT/,/END OMIT/
+
+* Pipes
+
+a _pipeline_ is a sequence of one or more commands separated by '|' or '|&', where output of one command is connected to input of another
+
+Syntax
+
+    [time [-p]] [!] command1 [ | or |& command2 ] …
+
+- *time* prints timing statistics to be printed for the pipeline once it finishes
+
+.play -edit src/pipe/pipe_time.sh /START OMIT/,/END OMIT/
+
+- _|&_ is used to add command's standard error to its standard output
+
+.play -edit src/pipe/pipe_err.sh /START OMIT/,/END OMIT/
+
+* Here
+
+*Documents*
+
+Read input from the current source until a line containing only the word is seen. Lines are then used as standard input for a command
+
+.play -edit src/here/document.sh /START OMIT/,/END OMIT/
+
+Strings
+
+Similar as documents but for strings.
+
+.play -edit src/here/string.sh /START OMIT/,/END OMIT/
+
+* Arrays
+
+*Indexed*Arrays*
+
+indexed arrays are zero-based
+
+    name[subscript]=value #The subscript is treated as an arithmetic expression 
+                          #that must evaluate to a number.
+    declare -a another_array
+
+    a=(value1 value2 … )
+
+*Associative*Array*
+
+associative arrays use arbitrary strings
+
+    declare -A names
+
+when assigning to an associative array, the subscript is required.
+
+* Arrays in action
+
+Indexed:
+
+.play -edit src/indexed_array.sh /START OMIT/,/END OMIT/
+
+Associative:
+
+.play -edit src/associative_array.sh /START OMIT/,/END OMIT/
+
+* Loops(I)
+
+for:
+
+    for arg in [list]; do 
+        command(s)...
+    done
+
+until:
+
+    until test-commands; do 
+        command(s)...
+    done
+
+while:
+
+    while test-commands; do 
+        command(s)...
+    done
+
+* Loops(II)
+
+Simple list:
+
+.play -edit src/loops/list_cities.sh /START OMIT/,/END OMIT/
+
+"List" enclosed in quotas creates a single variable
+
+.play -edit src/loops/list_cities_one_line.sh /START OMIT/,/END OMIT/
+
+* Loops(III)
+
+Command substitution in a _for_ loop
+
+.play -edit src/loops/list_cities_cmd_subst.sh /START OMIT/,/END OMIT/
+
+with _here_strings_
+
+.play -edit src/loops/list_cities_cmd_subst_here.sh /START OMIT/,/END OMIT/
+
+with _here_documents_
+
+.play -edit src/loops/list_cities_cmd_subst_here_docs.sh /START OMIT/,/END OMIT/
+
+* Loops(IV)
+
+C-style syntax
+
+.play -edit src/loops/list_cities_cmd_c_like.sh /START OMIT/,/END OMIT/
+
+with read
+
+.play -edit src/loops/list_cities_cmd_with_read.sh /START OMIT/,/END OMIT/
+
+* Loops(V)
+
+for loop with an array
+
+.play -edit src/loops/list_arrays_at.sh /START OMIT/,/END OMIT/
+
+but what if we expand array using *
+
+.play -edit src/loops/list_arrays_star.sh /START OMIT/,/END OMIT/
+
+* Functions
+
+    name () compound-command [ redirections ]
+
+or
+
+    function name [()] compound-command [ redirections ]
+
+- the exit status of a function is the exit status of the last command executed in the body or zero if empty
+- the arguments to the function become the positional parameters except 0
+- the function name is stored in FUNCNAME
+- local variables may be declared with the _local_ builtin
+
+* Function examples
+simple
+
+.play -edit src/functions/functions_simple.sh /START OMIT/,/END OMIT/
+
+with arguments
+
+.play -edit src/functions/functions_with_args.sh /START OMIT/,/END OMIT/
+
+* Whats next
+
+- Shell Expansions - there 7 different kinds of expansions
+- Shell Parameter Expansion - it is really powerfully tool
+- Coprocessing and GNU parallelism
+- Operations on file descriptors (Duplicating, Moving)
+- More and more...
+
+* References
+
+- [[https://www.gnu.org/software/bash/manual/bash.html][Bash manual]] 
+- [[https://www.tldp.org/LDP/abs/html/][Advanced Bash-Scripting Guide]] 
