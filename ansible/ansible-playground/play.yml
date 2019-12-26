@@ -1,0 +1,15 @@
+- hosts: webservers
+  tasks:
+    - name: test connection
+      ping:
+    - name: install the latest version of Apache and MariaDB
+      package:
+        name:
+        - httpd
+        - mariadb-server
+        state: latest
+
+    - name: ensure apache is running
+      service:
+        name: httpd
+        state: started

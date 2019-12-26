@@ -1,0 +1,2 @@
+[wordpress-server]
+192.168.99.101 ansible_port=2222 ansible_user=root ansible_ssh_pass=centos
