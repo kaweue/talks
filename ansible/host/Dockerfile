@@ -12,6 +12,8 @@ rm -f /lib/systemd/system/basic.target.wants/*;\
 rm -f /lib/systemd/system/anaconda.target.wants/*;
 VOLUME [ "/sys/fs/cgroup" ]
 
+# ip route is required by ansible to gather facts
+RUN yum -y install iproute
 RUN yum -y install openssh-server && systemctl enable sshd
 RUN echo "root:centos" | chpasswd
 

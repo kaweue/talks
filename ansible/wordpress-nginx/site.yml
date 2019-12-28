@@ -1,13 +1,91 @@
 ---
-- name: Install WordPress, MariaDB, Nginx, and PHP-FPM
-  hosts: wordpress-server
+- name: Gather facts
+  hosts: all
   remote_user: root
-  # remote_user: user
-  # sudo: yes
 
+- name: Configure wordpress database
+  hosts: wordpress_db
+  gather_facts: no
+  remote_user: root
   roles:
-    - common
-    - mariadb
-    - nginx
+    - name: mariadb
+      vars:
+        db_user:
+          name: "wordpress"
+          host: "%"
+          password: "secret"
+        db_name: "wordpress"
+
+- name: Configure wordpress database master
+  hosts: wordpress_db_master
+  gather_facts: no
+  remote_user: root
+  roles:
+    - name: mysql-master
+      vars:
+        db_name: "wordpress"
+
+- name: Configure wordpress database follower
+  hosts: wordpress_db_follower
+  gather_facts: no
+  remote_user: root
+  roles:
+    - name: mysql-slave
+      vars:
+        db_name: "wordpress"
+
+- name: Configure wordpress
+  hosts: wordpress
+  gather_facts: no
+  remote_user: root
+  pre_tasks:
+    - name: Add group "wordpress"
+      group: name=wordpress
+    - name: Add user "wordpress"
+      user: name=wordpress group=wordpress home=/srv/wordpress
+    - name: Recursively change ownership of a directory
+      file:
+        path: /srv/wordpress
+        state: directory
+        recurse: yes
+        owner: wordpress
+        group: wordpress
+  roles:
+    - name: nginx
+      vars:
+        server_root: /srv/wordpress/
+        backends:
+          - unix:/var/run/php-fpm/wordpress.sock
     - php-fpm
-    - wordpress
+
+- name: Configure wordpress master
+  hosts: wordpress_server
+  gather_facts: no
+  remote_user: root
+  roles:
+    - name: wordpress
+      vars:
+        wp_db_host: "{{ hostvars[groups['wordpress_db'][0]].ansible_default_ipv4.address }}"
+    - name: rsync
+      vars:
+        rsync_user: wordpress
+        rsync_destinations: "{{ groups['wordpress_follower'] | map('extract', hostvars, ['ansible_default_ipv4', 'address']) | list }}"
+        rsync_source: /srv/wordpress/
+
+- name: Configure wordpress follower
+  hosts: wordpress_follower
+  gather_facts: no
+  remote_user: root
+  roles:
+    - name: rsyncd
+      vars:
+        rsyncd_user: wordpress
+        rsyncd_group: wordpress
+        rsyncd_hosts_allow: "{{ groups['wordpress_server'] | map('extract', hostvars, ['ansible_default_ipv4', 'address']) | list }}"
+        rsyncd_directories:
+          - name: wordpress
+            path: /srv/wordpress/
+    - name: wordpress-slave
+      vars:
+        wp_db_host: "{{ hostvars[db_instance].ansible_default_ipv4.address }}"
+

@@ -1,0 +1,22 @@
+---
+- name: Install rsync
+  package:
+    name: rsync
+
+- name: Sync to {{ rsync_destinations }}
+  include_role:
+    name: apkawa.cron
+  vars:
+    cron:
+      - name: sync {{ rsync_destination }}
+        command: rsync -avz --delete {{ rsync_source }} {{ rsync_destination }}::wordpress
+        user: "{{ rsync_user }}"
+        minute: "*"
+        hour: "*"
+        day: "*"
+        month: "*"
+        weekday: "*"
+        delete: false
+  loop: "{{ rsync_destinations }}"
+  loop_control:
+    loop_var: rsync_destination

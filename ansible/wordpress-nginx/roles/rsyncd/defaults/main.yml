@@ -1,0 +1,6 @@
+rsyncd_hosts_allow:
+  - 127.0.0.1
+
+rsyncd_directories:
+  - name: tmp
+    path: /tmp

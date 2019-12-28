@@ -1,0 +1,28 @@
+---
+- name: Make slave binlog-do-db
+  ini_file:
+    dest: /etc/my.cnf
+    section: mysqld
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    no_extra_spaces: yes
+  notify: restart mariadb
+  loop:
+    - option: binlog-do-db
+      value: "{{ db_name }}"
+    - option: binlog-format
+      value: "row"
+    - option: log-basename
+      value: "master"
+    - option: log-bin
+      value: "mysql-bin"
+
+- meta: flush_handlers
+
+- name: Ensure replication user exists on master.
+  mysql_user:
+    name: "replication"
+    host: "%"
+    password: "replication"
+    priv: "*.*:REPLICATION SLAVE,REPLICATION CLIENT"
+    state: present

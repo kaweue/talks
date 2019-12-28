@@ -1,0 +1,16 @@
+log file = /var/log/rsyncd.log
+hosts allow = {% for ip in rsyncd_hosts_allow %}{{ ip }}, {% endfor %}
+
+hosts deny = *
+list = true
+uid = {{ rsyncd_user }}
+gid = {{ rsyncd_group }}
+read only = false
+
+{% for directory in rsyncd_directories %}
+[{{ directory.name }}]
+path = {{ directory.path }}
+comment = {{ directory.name }}
+exclude = wp-config.php
+{% endfor %}
+

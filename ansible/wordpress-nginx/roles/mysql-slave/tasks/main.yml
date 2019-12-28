@@ -1,0 +1,42 @@
+---
+
+- name: Make slave read_only
+  ini_file:
+    dest: /etc/my.cnf
+    section: mysqld
+    option: read_only
+    allow_no_value: true
+  notify: restart mariadb
+
+- name: Make slave binlog-do-db
+  ini_file:
+    dest: /etc/my.cnf
+    section: mysqld
+    option: replicate-do-db
+    value: "{{ db_name }}"
+    no_extra_spaces: yes
+  notify: restart mariadb
+
+- meta: flush_handlers
+
+- name: Check master replication status.
+  mysql_replication: 
+    mode: getmaster
+  delegate_to: "donald"
+  register: master
+
+- mysql_replication:
+    mode: stopslave
+
+- name: Configure replication on the slave.
+  mysql_replication:
+    mode: changemaster
+    master_host: "{{ hostvars[mysql_replication_master].ansible_default_ipv4.address }}"
+    master_user: "replication"
+    master_password: "replication"
+    master_log_file: "{{ master.File }}"
+    master_log_pos: "{{ master.Position }}"
+
+- name: Start replication.
+  mysql_replication: 
+    mode: startslave

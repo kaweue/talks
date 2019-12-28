@@ -1,0 +1,13 @@
+---
+- name: Install rsync
+  package:
+    name: rsync
+
+- name: Copy rsyncd configuration
+  template: 
+    src: rsyncd.conf.j2
+    dest: /etc/rsyncd.conf
+  notify: restart rsyncd
+
+- name: Start rsyncd Service
+  service: name=rsyncd state=started enabled=yes

@@ -1,17 +1,30 @@
 ---
+- name: Install epel release
+  package:
+    name: 
+      - epel-release
+      - http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+
+- name: Enable remi's php74 repository
+  ini_file:
+    dest: /etc/yum.repos.d/remi-php74.repo
+    section: remi-php74
+    option: enabled
+    value: "1"
+
 - name: Install php-fpm and deps
-  yum: name={{ item }} state=present
-  with_items:
-    - php
-    - php-fpm
-    - php-enchant
-    - php-IDNA_Convert
-    - php-mbstring
-    - php-mysql
-    - php-PHPMailer
-    - php-process
-    #- php-simplepie
-    - php-xml
+  package:
+    name:
+      - php 
+      - php-common 
+      - php-mysql 
+      - php-gd 
+      - php-xml 
+      - php-mbstring 
+      - php-mcrypt 
+      - php-xmlrpc
+      - php-fpm
+    state: present
 
 - name: Disable default pool
   command: mv /etc/php-fpm.d/www.conf /etc/php-fpm.d/www.disabled creates=/etc/php-fpm.d/www.disabled
@@ -20,3 +33,6 @@
 - name: Copy php-fpm configuration
   template: src=wordpress.conf dest=/etc/php-fpm.d/
   notify: restart php-fpm
+
+- name: Start php-fpm Service
+  service: name=php-fpm state=started enabled=yes

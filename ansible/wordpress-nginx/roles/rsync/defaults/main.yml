@@ -1,0 +1,3 @@
+rsync_destinations: []
+rsync_user: root
+rsync_source: 

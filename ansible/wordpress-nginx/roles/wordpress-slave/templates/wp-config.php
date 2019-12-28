@@ -75,10 +75,12 @@ define('WPLANG', '');
 define('WP_DEBUG', false);
 
 /** Disable Automatic Updates Completely */
-define( 'AUTOMATIC_UPDATER_DISABLED', {{auto_up_disable}} );
+define( 'AUTOMATIC_UPDATER_DISABLED', true );
 
 /** Define AUTOMATIC Updates for Components. */
-define( 'WP_AUTO_UPDATE_CORE', {{core_update_level}} );
+define( 'WP_AUTO_UPDATE_CORE', false );
+
+define('WP_HOME', 'http://'.$_SERVER['SERVER_NAME'].'{{ wp_port }}');
 
 /* That's all, stop editing! Happy blogging. */
 

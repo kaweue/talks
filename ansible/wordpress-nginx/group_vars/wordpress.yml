@@ -1,0 +1,27 @@
+wp_server_root: /srv/
+wp_version: 4.6
+
+# These are the WordPress database settings
+wp_db_host: "localhost"
+wp_db_name: wordpress
+wp_db_user: wordpress
+wp_db_password: secret
+wp_salt: |
+    define('AUTH_KEY',         'wnO*|BWdX(TYFEa8Y7%g`.VES|aE6A[yg<+D;:M;CEF0XSL^zQQ=I.|,{U+e+L&`');
+    define('SECURE_AUTH_KEY',  '1q+c?C*;[d<wSEG?8W|;Iv{xP?p=xvcm~M(&D/NpU}O?Jzq=WA(NKt-RnI|P1RoD');
+    define('LOGGED_IN_KEY',    '$[J-B_m[bjCJuPel@W[|)Ei@6XI]A|IVZ}DMLL!b`;Wqn0Z~|an!)LVhKV]<ACyH');
+    define('NONCE_KEY',        'L*cVax.Z&+(vk*J-3mFvnV+oMrO5FhqR,-S$@+]aX(ftj1[=&+4!ZD(@q^9|reV_');
+    define('AUTH_SALT',        'XITfNWR6Wo/K;;sgcJ%Qa#n;zT Y;<2JEELg/wWSJ}&h<~$1Ml?(x:`,Z=P&|yEV');
+    define('SECURE_AUTH_SALT', 'o$bn!NTlbjHhR*CV@kJ/,3I 5-=$0H)*-<D`lj@[W(<dkHxgs*C?7M%-yxcc^N[a');
+    define('LOGGED_IN_SALT',   '<uNK8q,QG3{Fx}<C-FI59tTt^u[PF&b)d+46G%?+HO%A?>w`a-a,n+SXheF$9T~{');
+    define('NONCE_SALT',       'HEShiIAJ}|=yp(6SsU_{VsQb)|&DSQQ(oJQ|FvZ,-m+~Vi:jun_n:E5e5!cV}R`+');
+
+# Disable All Updates
+# By default automatic updates are enabled, set this value to true to disable all automatic updates
+auto_up_disable: false
+
+#Define Core Update Level
+# true  = Development, minor, and major updates are all enabled
+# false = Development, minor, and major updates are all disabled
+# minor = Minor updates are enabled, development, and major updates are disabled
+core_update_level: true
