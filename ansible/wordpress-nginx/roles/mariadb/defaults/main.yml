@@ -1,6 +1,7 @@
 mysql_port: 3306
 mysql_server_id: 1
 db_name: "name"
+db_import_file: ""
 db_user:
   name: "user"
   host: "localhost"

@@ -12,21 +12,31 @@
   ini_file:
     dest: /etc/my.cnf
     section: mysqld
-    option: replicate-do-db
-    value: "{{ db_name }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
     no_extra_spaces: yes
+  loop:
+    - option: replicate-do-db
+      value: "{{ db_name }}"
+    - option: server-id
+      value: "{{ mysql_server_id}}"
   notify: restart mariadb
 
 - meta: flush_handlers
+
+- name: Check slave replication status.
+  mysql_replication:
+    mode: getslave
+  ignore_errors: true
+  register: slave
 
 - name: Check master replication status.
   mysql_replication: 
     mode: getmaster
   delegate_to: "donald"
   register: master
-
-- mysql_replication:
-    mode: stopslave
+  when:
+    - slave.Is_Slave is defined and not slave.Is_Slave
 
 - name: Configure replication on the slave.
   mysql_replication:
@@ -36,7 +46,11 @@
     master_password: "replication"
     master_log_file: "{{ master.File }}"
     master_log_pos: "{{ master.Position }}"
+  when:
+    - slave.Is_Slave is defined and not slave.Is_Slave
 
 - name: Start replication.
   mysql_replication: 
     mode: startslave
+  when:
+    - slave.Is_Slave is defined and not slave.Is_Slave

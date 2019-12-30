@@ -10,8 +10,12 @@
 - name: Install nginx
   package: name=nginx state=present
 
-- name: Copy nginx configuration
+- name: Copy nginx server configuration
   template: src=default.conf dest=/etc/nginx/conf.d/default.conf
+  notify: restart nginx
+
+- name: Copy nginx configuration
+  template: src=nginx.conf dest=/etc/nginx/nginx.conf
   notify: restart nginx
 
 - name: http service state

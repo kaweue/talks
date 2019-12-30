@@ -1,7 +1,7 @@
 ---
 - name: Install wordpress
   unarchive:
-    src: http://wordpress.org/wordpress-{{ wp_version }}.tar.gz
+    src: "{{ wp_archive }}"
     dest: "{{ wp_server_root }}"
     creates: "{{ wp_server_root }}/wordpress/index.php"
     owner: wordpress

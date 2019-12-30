@@ -2,5 +2,5 @@ backends:
   - unix:/var/run/php-fpm/wordpress.sock
   
 server_root: /srv/
-server_hostname: server.example.com
+server_hostname: 192.168.99.100
 nginx_port: 8080

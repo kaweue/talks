@@ -1,6 +1,14 @@
 ---
 # This playbook will install MariaDB and create db user and give permissions.
 
+- name: MariaDB repository definition
+  yum_repository:
+    name: mariadb
+    description: MariaDB
+    baseurl: http://yum.mariadb.org/10.1/centos7-amd64
+    gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+    gpgcheck: yes
+
 - name: Install MariaDB package
   package:
     name:
@@ -8,12 +16,7 @@
       - mariadb-server
       - MySQL-python
       - libsemanage-python
-    state: installed
-
-- name: Create Mysql configuration file
-  template: src=my.cnf.j2 dest=/etc/my.cnf force=no
-  notify:
-  - restart mariadb
+    state: latest
 
 - name: Create MariaDB log file
   file:
@@ -28,8 +31,24 @@
 - name: Start MariaDB Service
   service: name=mariadb state=started enabled=yes
 
+- block:
+    - name: Copy database dump file
+      copy:
+          src: "{{ db_import_file }}"
+          dest: /tmp/backup.sql
+
+    - name: Import {{ db_name }} database
+      mysql_db:
+          name: "{{ db_name }}"
+          state: "import"
+          target: /tmp/backup.sql
+  when: db_import_file | length > 0
+
 - name: Create {{ db_name }} database
-  mysql_db: name={{ db_name }} state=present
+  mysql_db:
+    name: "{{ db_name }}"
+    state: present
+  when: db_import_file | length == 0
 
 - name: Create {{ db_user.name }} database user
   mysql_user:
@@ -37,4 +56,11 @@
     host: "{{ db_user.host }}"
     password: "{{ db_user.password }}"
     priv: "{{ db_user.name }}.*:ALL"
+    state: present
+
+- name: Ensure password-less access for root
+  mysql_user:
+    name: root
+    host: "localhost"
+    password: ""
     state: present

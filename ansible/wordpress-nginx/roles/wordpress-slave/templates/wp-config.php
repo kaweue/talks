@@ -80,7 +80,7 @@ define( 'AUTOMATIC_UPDATER_DISABLED', true );
 /** Define AUTOMATIC Updates for Components. */
 define( 'WP_AUTO_UPDATE_CORE', false );
 
-define('WP_HOME', 'http://'.$_SERVER['SERVER_NAME'].'{{ wp_port }}');
+define('WP_HOME', 'http://'.$_SERVER['SERVER_NAME'].':'.'{{ wp_port }}');
 
 /* That's all, stop editing! Happy blogging. */
 

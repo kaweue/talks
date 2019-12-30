@@ -15,6 +15,7 @@
           host: "%"
           password: "secret"
         db_name: "wordpress"
+        db_import_file: "{{ wordpress_db_import_file }}"
 
 - name: Configure wordpress database master
   hosts: wordpress_db_master
@@ -33,6 +34,9 @@
     - name: mysql-slave
       vars:
         db_name: "wordpress"
+        db_user:
+          name: "wordpress"
+          password: "secret"
 
 - name: Configure wordpress
   hosts: wordpress

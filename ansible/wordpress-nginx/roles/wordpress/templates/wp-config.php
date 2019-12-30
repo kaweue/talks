@@ -82,6 +82,10 @@ define( 'WP_AUTO_UPDATE_CORE', {{core_update_level}} );
 
 /* That's all, stop editing! Happy blogging. */
 
+define('WP_HOME', 'http://'.$_SERVER['SERVER_NAME'].':'.'{{ wp_port }}');
+define('WP_SITEURL', 'http://'.$_SERVER['SERVER_NAME'].':'.'{{ wp_port }}');
+
+
 /** Absolute path to the WordPress directory. */
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(__FILE__) . '/');

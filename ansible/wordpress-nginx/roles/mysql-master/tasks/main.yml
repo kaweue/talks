@@ -16,6 +16,8 @@
       value: "master"
     - option: log-bin
       value: "mysql-bin"
+    - option: server-id
+      value: "{{ mysql_server_id}}"
 
 - meta: flush_handlers
 

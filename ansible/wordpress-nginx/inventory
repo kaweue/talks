@@ -4,22 +4,22 @@ ansible_user=root
 ansible_ssh_pass=centos
 
 [wordpress_server]
-johnny ansible_port=2222
+johnny ansible_port=2222 wp_port=8080
 
 [wordpress_follower]
-julian ansible_port=2223 db_instance=boris
-anna ansible_port=2224 db_instance=hanna
+julian ansible_port=2223 db_instance=boris wp_port=8081
+anna ansible_port=2224 db_instance=hanna wp_port=8082
 
 [wordpress:children]
 wordpress_server
 wordpress_follower
 
 [wordpress_db_master]
-donald ansible_port=2225
+donald ansible_port=2225 mysql_server_id=1
 
 [wordpress_db_follower]
-boris ansible_port=2226 mysql_server_id=2 mysql_replication_master=donald wp_port=8084
-hanna ansible_port=2227 mysql_server_id=3 mysql_replication_master=donald wp_port=8085
+boris ansible_port=2226 mysql_server_id=2 mysql_replication_master=donald
+hanna ansible_port=2227 mysql_server_id=3 mysql_replication_master=donald
 
 [wordpress_db:children]
 wordpress_db_master
