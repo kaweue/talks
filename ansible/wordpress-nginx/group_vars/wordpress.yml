@@ -1,7 +1,6 @@
 wp_server_root: /srv/
 wp_archive: http://wordpress.org/wordpress-4.6.tar.gz
 
-# These are the WordPress database settings
 wp_db_host: "localhost"
 wp_db_name: wordpress
 wp_db_user: wordpress
@@ -16,12 +15,5 @@ wp_salt: |
     define('LOGGED_IN_SALT',   '<uNK8q,QG3{Fx}<C-FI59tTt^u[PF&b)d+46G%?+HO%A?>w`a-a,n+SXheF$9T~{');
     define('NONCE_SALT',       'HEShiIAJ}|=yp(6SsU_{VsQb)|&DSQQ(oJQ|FvZ,-m+~Vi:jun_n:E5e5!cV}R`+');
 
-# Disable All Updates
-# By default automatic updates are enabled, set this value to true to disable all automatic updates
 auto_up_disable: false
-
-#Define Core Update Level
-# true  = Development, minor, and major updates are all enabled
-# false = Development, minor, and major updates are all disabled
-# minor = Minor updates are enabled, development, and major updates are disabled
 core_update_level: true
